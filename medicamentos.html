@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medipack</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+
+<body>
+    <header></header>
+    <h1>Medicamentos</h1>
+<!-- <section class="productos">
+   <div class="row row-cols-1 row-cols-md-5 g-4">
+        <div class="col">
+          <div class="card h-100">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Card title</h5>
+              <p class="card-text">.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+            <div class="card h-100">
+              <img src="..." class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card h-100">
+              <img src="..." class="card-img-top" alt="...">
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">.</p>
+              </div>
+            </div>
+          </div>
+      </div>
+</section>
+-->
+<table class="tabla-medicamentos">
+  <thead>
+      <tr>
+          <th><a style="font-size: 18px;" href="altas.html">Alta de Productos</a></th>
+          <th><a style="font-size: 18px;" href="modificaciones.html">Modificar Productos</a></th>
+          <th><a style="font-size: 18px;" href="listadoEliminar.html">Eliminar Productos</a></th>
+          
+      </tr>
+  </thead>
+</table>
+<table class="tabla-medicamentos">
+  <thead>
+      <tr>
+          <th style="font-size: 20px;">Código Art.</th>
+          <th style="font-size: 20px;">Descripción</th>
+          <th style="font-size: 20px;">Cantidad</th>
+          <th style="font-size: 20px;" align="center">Precio</th>
+      </tr>
+  </thead>
+  <tbody id="tablaProductos">
+  </tbody>
+</table>
+
+<div class="contenedor-centrado">
+  <a class="boton-inicio" href="index.html">Inicio</a>
+</div>
+
+<script>
+  const URL = "https://estefanyqh.pythonanywhere.com/"
+
+  // Realizamos la solicitud GET al servidor para obtener todos los productos
+  fetch(URL + 'productos')
+      .then(function (response) {
+          if (response.ok) {
+              return response.json(); // Parseamos la respuesta JSON
+          } else {
+              // Si hubo un error, lanzar explícitamente una excepción
+              // para ser "catcheada" más adelante
+              throw new Error('Error al obtener los productos.');
+          }
+      })
+      .then(function (data) {
+          var tablaProductos = document.getElementById('tablaProductos');
+
+          // Iteramos sobre los productos y agregamos filas a la tabla
+          data.forEach(function (producto) {
+              var fila = document.createElement('tr');
+              fila.innerHTML = '<td>' + producto.codigo + '</td>' +
+                  '<td>' + producto.descripcion + '</td>' + 
+                  '<td align="right">' + producto.cantidad + '</td>' +
+                  '<td align="right">&nbsp; &nbsp;&nbsp; &nbsp;' + producto.precio + '</td>';
+              tablaProductos.appendChild(fila);
+          });
+      })
+      .catch(function (error) {
+          // Código para manejar errores
+          alert('Error al obtener los productos.');
+      });
+</script>
+
+    <script src="js/bootstrap.min.js"></script>  
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="js/header.js"></script>
+    <script src="js/menu.js"></script>
+    <script src="js/footer.js"></script>
+</body>
+</html>

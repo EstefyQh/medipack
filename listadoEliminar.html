@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medipack</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+
+<body>
+
+    <header></header>
+    <h1 style="margin-bottom: 2em;">Baja de Productos</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Descripción</th>
+                <th>Cantidad</th>
+                <th align="right">Precio</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="producto in productos">
+                <td>{{ producto.codigo }}</td>
+                <td>{{ producto.descripcion }}</td>
+                <td>{{ producto.cantidad }}</td>
+                <td align="right">{{ producto.precio }}</td>
+                <td><button @click="eliminarProducto(producto.codigo)">Eliminar</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="contenedor-centrado">
+        <a style="margin-top: 2em; font-size: 20px;" href="medicamentos.html">Atras</a>
+    </div>
+
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        const URL = "https://estefanyqh.pythonanywhere.com/"
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    productos: []
+                }
+            },
+            methods: {
+                obtenerProductos() {
+                    // Obtenemos el contenido del inventario
+                    fetch(URL + 'productos')
+                        .then(response => {
+                            if (response.ok) {
+                                return response.json(); // Parseamos la respuesta JSON
+                            } else {
+                                // Si hubo un error, lanzar explícitamente una excepción
+                                // para ser "catcheada" más adelante
+                                throw new Error('Error al obtener los productos.');
+                            }
+                        })
+                        .then(data => {
+                            // El código Vue itera este elemento para generar la tabla
+                            this.productos = data;
+                        })
+                        .catch(error => {
+                            console.log('Error:', error);
+                            alert('Error al obtener los productos.');
+                        });
+                },
+                eliminarProducto(codigo) {
+                    // Eliminamos el producto de la fila seleccionada
+                    fetch(URL + `productos/${codigo}`, { method: 'DELETE' })
+                        .then(response => {
+                            if (response.ok) {
+                                // Eliminar el producto de la lista después de eliminarlo en el servidor
+                                this.productos = this.productos.filter(producto => producto.codigo !== codigo);
+                                console.log('Producto eliminado correctamente.');
+                            } else {
+                                // Si hubo un error, lanzar explícitamente una excepción
+                                // para ser "catcheada" más adelante
+                                throw new Error('Error al eliminar el producto.');
+                            }
+                        })
+                        .catch(error => {
+                            // Código para manejar errores
+                            alert('Error al eliminar el producto.');
+                        });
+                }
+            },
+            mounted() {
+                //Al cargar la página, obtenemos la lista de productos
+                this.obtenerProductos();
+            }
+        });
+
+        app.mount('body');
+    </script>
+    <footer></footer>
+    <script src="js/bootstrap.min.js"></script>  
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="js/header.js"></script>
+    <script src="js/menu.js"></script>
+    <script src="js/footer.js"></script>
+
+</body>
+</html>
